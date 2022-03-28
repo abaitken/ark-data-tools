@@ -6,8 +6,8 @@ namespace ArkDataProcessor
     {
         internal override async void Execute(ArkGameData data, Configuration configuration)
         {
-            var uploadTarget = configuration.UploadTargets.FirstOrDefault(i => i.Id.Equals("tamed_breeding_data"));
-            if (uploadTarget == null)
+            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals("tamed_breeding_data")).ToList();
+            if (uploadTargets.Count == 0)
                 return;
 
             var tamedCreatures = data.TamedCreatures;
@@ -77,7 +77,8 @@ namespace ArkDataProcessor
 
             var tempPath = TemporaryFileServices.GenerateFileName(".tsv");
             await new StoreTsvDataPipelineTask().ExecuteAsync(records, tempPath);
-            await new PublishFilePipelineTask().ExecuteAsync(tempPath, uploadTarget);
+            foreach (var uploadTarget in uploadTargets)
+                await new PublishFilePipelineTask().ExecuteAsync(tempPath, uploadTarget);
             _ = new RemoveFilePipelineTask().ExecuteAsync(tempPath);
         }
 

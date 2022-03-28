@@ -6,8 +6,8 @@ namespace ArkDataProcessor
     {
         internal override async void Execute(ArkGameData data, Configuration configuration)
         {
-            var uploadTarget = configuration.UploadTargets.FirstOrDefault(i => i.Id.Equals("tamed_creature_locations"));
-            if (uploadTarget == null)
+            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals("tamed_creature_locations")).ToList();
+            if (uploadTargets.Count == 0)
                 return;
 
             var creaturesByType = await new SelectCreaturesByTypePipelineTask().ExecuteAsync(data.TamedCreatures);
@@ -21,7 +21,8 @@ namespace ArkDataProcessor
 
             var tempPath = TemporaryFileServices.GenerateFileName(".json");
             await new StoreJsonDataPipelineTask<dynamic>().ExecuteAsync(creatureLocationData, tempPath);
-            await new PublishFilePipelineTask().ExecuteAsync(tempPath, uploadTarget);
+            foreach (var uploadTarget in uploadTargets)
+                await new PublishFilePipelineTask().ExecuteAsync(tempPath, uploadTarget);
             _ = new RemoveFilePipelineTask().ExecuteAsync(tempPath);
         }
     }
