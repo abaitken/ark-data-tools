@@ -1,0 +1,25 @@
+{
+    LongDelay: 900,
+    ShortDelay: 10,
+    SaveFilePath: "PATH_TO_SAVE_FILE\\TheIsland.ark",
+    UploadTargets: [
+        {
+            Id: "disabled_tamed_breeding_data",
+            Scheme: "copy",
+            RemoteTarget: "PATH_TO_REMOTE_TARGET\\tamed_breeding_data.tsv"
+        },
+        {
+            Id: "disabled_tamed_creature_locations",
+            Scheme: "copy",
+            RemoteTarget: "PATH_TO_REMOTE_TARGET\\tamed_creature_locations.json"
+        },
+        {
+            Id: "wild_creature_locations",
+            Scheme: "sftp",
+            Host: "SERVER_ADDRESS",
+            Username: "USER_NAME",
+            Password: "PASS_WORD",
+            RemoteTarget: "/PATH_TO_REMOTE_TARGET/data.json"
+        }
+    ]
+}
