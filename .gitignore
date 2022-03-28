@@ -1,3 +1,4 @@
 .vs
 bin
 obj
+/src/ArkDataProcessor/Properties/launchSettings.json
