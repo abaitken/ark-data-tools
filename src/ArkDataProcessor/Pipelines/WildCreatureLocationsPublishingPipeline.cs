@@ -16,7 +16,8 @@ namespace ArkDataProcessor
             var creatureLocationData = new
             {
                 CreatureClasses = locationsByType.Keys,
-                Locations = locationsByType
+                Locations = locationsByType,
+                LastUpdated = DateTime.UtcNow.ToString()
             };
 
             var tempPath = TemporaryFileServices.GenerateFileName(".json");
