@@ -12,7 +12,7 @@ namespace ArkDataProcessor
                 return;
 
             var creaturesByType = await new SelectCreaturesByTypePipelineTask().ExecuteAsync(data.WildCreatures);
-            var locationsByType = await new SelectLocationsByTypePipelineTask().ExecuteAsync(creaturesByType);
+            var locationsByType = await new SelectCreatureLocationsByTypePipelineTask().ExecuteAsync(creaturesByType);
             var creatureLocationData = new
             {
                 CreatureClasses = locationsByType.Keys,

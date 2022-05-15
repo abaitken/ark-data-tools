@@ -2,16 +2,16 @@
 
 namespace ArkDataProcessor
 {
-    class TamedCreatureLocationsPublishingPipeline : DataProcessingPipeline
+    class StructureLocationsPublishingPipeline : DataProcessingPipeline
     {
         internal override async void Execute(ArkGameData data, Configuration configuration)
         {
-            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals("tamed_creature_locations")).ToList();
+            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals("structure_locations")).ToList();
             if (uploadTargets.Count == 0)
                 return;
 
-            var creaturesByType = await new SelectCreaturesByTypePipelineTask().ExecuteAsync(data.TamedCreatures);
-            var locationsByType = await new SelectCreatureLocationsByTypePipelineTask().ExecuteAsync(creaturesByType);
+            var structuresByType = await new SelectStructuresByTypePipelineTask().ExecuteAsync(data.Structures);
+            var locationsByType = await new SelectStructureLocationsByTypePipelineTask().ExecuteAsync(structuresByType);
             var creatureLocationData = new
             {
                 CreatureClasses = locationsByType.Keys,
