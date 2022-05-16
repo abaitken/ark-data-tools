@@ -33,7 +33,7 @@ namespace ArkDataProcessor
 
         private void ValidateUploadTarget(UploadTarget uploadTarget)
         {
-            var validIds = new[] { "tamed_breeding_data", "tamed_creature_locations", "wild_creature_locations" };
+            var validIds = new[] { "tamed_breeding_data", "tamed_creature_locations", "wild_creature_locations", "structure_locations" };
             var validSchemes = new[] { "copy", "sftp" };
             if (string.IsNullOrWhiteSpace(uploadTarget.Id))
                 throw new InvalidOperationException($"Upload target Id is required");
