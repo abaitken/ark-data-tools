@@ -20,37 +20,45 @@ namespace ArkDataProcessor
         {
             var longWait = TimeSpan.FromSeconds(_configuration.LongDelay);
             var shortWait = TimeSpan.FromSeconds(_configuration.ShortDelay);
-            var fileService = new FileService(_configuration.SaveFilePath);
-            var lastModified = fileService.GetLastModified();
+            var fileServices = _configuration.MonitoringSources.Select(v => new FileService(v.FilePath)).ToList();
+            var lastModifieds = fileServices.Select(v => v.GetLastModified()).ToList();
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                while(!stoppingToken.IsCancellationRequested)
+                _logger.LogInformation("Checking for updated file...");
+                var queue = new Queue<int>(Enumerable.Range(0, lastModifieds.Count));
+
+                while(!(queue.Count == 0 || stoppingToken.IsCancellationRequested))
                 {
-                    _logger.LogInformation("Checking for updated file...");
+                    var index = queue.Dequeue();
+                    var fileService = fileServices[index];
+                    var configuration = _configuration.MonitoringSources[index];
+                    var lastModified = lastModifieds[index];
+
                     var modifiedTime = fileService.GetLastModified();
                     var action = DetermineServiceAction(lastModified, modifiedTime);
 
                     if (action == ServiceAction.Wait)
-                        break;
+                        continue;
 
-                    if(action == ServiceAction.Execute && !fileService.CanRead())
+                    if (action == ServiceAction.Execute && !fileService.CanRead())
                         action = ServiceAction.Retry;
 
                     if (action == ServiceAction.Retry)
                     {
                         _logger.LogInformation("File not ready. Retrying shortly...");
                         await Task.Delay(shortWait, stoppingToken);
+                        queue.Enqueue(index);
                         continue;
                     }
 
-                    if(action == ServiceAction.Execute)
+                    if (action == ServiceAction.Execute)
                     {
                         _logger.LogInformation("File has changed. Executing pipelines...");
-                        var fileHandler = new SaveGameFileHandler(_loggerFactory, _configuration);
-                        fileHandler.Process(_configuration.SaveFilePath);
+                        var fileHandler = new SaveGameFileHandler(_loggerFactory, configuration);
+                        fileHandler.Process(configuration.FilePath);
                         lastModified = modifiedTime;
-                        break;
+                        continue;
                     }
 
                     throw new InvalidOperationException($"Unexpected action: {action}");

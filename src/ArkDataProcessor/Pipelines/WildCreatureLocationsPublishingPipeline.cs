@@ -5,9 +5,11 @@ namespace ArkDataProcessor
 {
     class WildCreatureLocationsPublishingPipeline : DataProcessingPipeline
     {
-        internal override async void Execute(ArkGameData data, Configuration configuration)
+        public override string Id => "wild_creature_locations";
+
+        internal override async void Execute(ArkGameData data, MonitoringSource configuration)
         {
-            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals("wild_creature_locations")).ToList();
+            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals(Id)).ToList();
             if (uploadTargets.Count == 0)
                 return;
 

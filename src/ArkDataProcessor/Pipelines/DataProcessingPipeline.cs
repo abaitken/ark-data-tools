@@ -4,9 +4,11 @@ namespace ArkDataProcessor
 {
     abstract class DataProcessingPipeline
     {
-        internal abstract void Execute(ArkGameData data, Configuration configuration);
+        public abstract string Id { get; }
 
-        internal Task ExecuteAsync(ArkGameData data, Configuration configuration)
+        internal abstract void Execute(ArkGameData data, MonitoringSource configuration);
+
+        internal Task ExecuteAsync(ArkGameData data, MonitoringSource configuration)
         {
             return Task.Run(() => Execute(data, configuration));
         }

@@ -4,9 +4,11 @@ namespace ArkDataProcessor
 {
     class TamedCreatureBreedingDataPublishingPipeline : DataProcessingPipeline
     {
-        internal override async void Execute(ArkGameData data, Configuration configuration)
+        public override string Id => "tamed_breeding_data";
+
+        internal override async void Execute(ArkGameData data, MonitoringSource configuration)
         {
-            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals("tamed_breeding_data")).ToList();
+            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals(Id)).ToList();
             if (uploadTargets.Count == 0)
                 return;
 

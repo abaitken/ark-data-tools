@@ -4,9 +4,11 @@ namespace ArkDataProcessor
 {
     class StructureLocationsPublishingPipeline : DataProcessingPipeline
     {
-        internal override async void Execute(ArkGameData data, Configuration configuration)
+        public override string Id => "structure_locations";
+
+        internal override async void Execute(ArkGameData data, MonitoringSource configuration)
         {
-            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals("structure_locations")).ToList();
+            var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals(Id)).ToList();
             if (uploadTargets.Count == 0)
                 return;
 

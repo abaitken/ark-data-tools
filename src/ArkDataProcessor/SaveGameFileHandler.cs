@@ -5,9 +5,9 @@ namespace ArkDataProcessor
     class SaveGameFileHandler
     {
         private readonly ILoggerFactory _loggerFactory;
-        private readonly Configuration _configuration;
+        private readonly MonitoringSource _configuration;
 
-        public SaveGameFileHandler(ILoggerFactory loggerFactory, Configuration configuration)
+        public SaveGameFileHandler(ILoggerFactory loggerFactory, MonitoringSource configuration)
         {
             _loggerFactory = loggerFactory;
             _configuration = configuration;
@@ -20,7 +20,7 @@ namespace ArkDataProcessor
             File.Copy(originalPath, tempPath);
             var data = new GameDataLoader().Load(tempPath);
 
-            var factory = new DataProcessingPipelineFactory(_configuration);
+            var factory = new DataProcessingPipelineFactory();
 
             foreach (var pipeline in factory.CreatePipelines())
                 pipeline.ExecuteAsync(data, _configuration);
