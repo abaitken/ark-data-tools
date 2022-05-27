@@ -27,7 +27,7 @@ namespace ArkDataProcessor
             return result;
         }
 
-        private readonly string[] _validKeys = { "WyvernNest_C" };
+        private readonly string[] _validKeys = { "BeaverDam_C", "WyvernNest_C" };
 
         private bool IsValid(string key)
         {
