@@ -58,6 +58,7 @@ namespace ArkDataProcessor
                         var fileHandler = new SaveGameFileHandler(_loggerFactory, configuration);
                         fileHandler.Process(configuration.FilePath);
                         lastModified = modifiedTime;
+                        lastModifieds[index] = modifiedTime;
                         continue;
                     }
 
