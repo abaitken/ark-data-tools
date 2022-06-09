@@ -7,8 +7,8 @@
         bool NoLogo { get; }
         bool InstallService { get; }
         bool UninstallService { get; }
-        string ServiceName { get; }
-        string DisplayName { get; }
+        string? ServiceName { get; }
+        string? DisplayName { get; }
         bool UseUserAccount { get; }
         bool LogToConsole { get; }
     }
