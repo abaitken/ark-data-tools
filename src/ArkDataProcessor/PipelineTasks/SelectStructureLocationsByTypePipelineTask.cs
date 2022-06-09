@@ -13,11 +13,15 @@ namespace ArkDataProcessor
                 if (!IsValid(item.Key))
                     continue;
                 var coords = from i in item.Value
-                             where i.Location != null && i.Location.Latitude.HasValue && i.Location.Longitude.HasValue
+                             let location = i.Location
+                             where location != null
+                             let lat = location.Latitude
+                             let lon = location.Longitude
+                             where lat.HasValue && lon.HasValue
                              select new Coordinate
                              {
-                                 Lat = Math.Round((double)i.Location.Latitude, 1),
-                                 Lon = Math.Round((double)i.Location.Longitude, 1),
+                                 Lat = Math.Round((double)lat, 1),
+                                 Lon = Math.Round((double)lon, 1),
                                  Level = 0
                              };
 
