@@ -19,6 +19,8 @@ namespace ArkDataProcessor
                    services.AddHostedService<FileMonitoringService>((provider) =>
                    {
                        var loggerFactory = provider.GetService<ILoggerFactory>();
+                       if (loggerFactory == null)
+                           throw new NullReferenceException($"The value of '{nameof(loggerFactory)}' is null where an object instance was expected");
                        var configuration = new ConfigurationReader().Load(options.ConfigurationFile);
                        new ConfigurationValidation(loggerFactory.CreateLogger<ConfigurationValidation>()).Validate(configuration);
                        return new FileMonitoringService(loggerFactory, loggerFactory.CreateLogger<FileMonitoringService>(), configuration);
