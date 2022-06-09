@@ -19,12 +19,28 @@
                     "RemoteTarget": "/PATH_TO_REMOTE_TARGET/tamed.json"
                 },
                 {
+                    "Id": "tamed_creature_locations_chunked",
+                    "Scheme": "sftp",
+                    "Host": "SERVER_ADDRESS",
+                    "Username": "USER_NAME",
+                    "Password": "PASS_WORD",
+                    "RemoteTarget": "/PATH_TO_REMOTE_TARGET/ti-tamed/"
+                },
+                {
                     "Id": "wild_creature_locations",
                     "Scheme": "sftp",
                     "Host": "SERVER_ADDRESS",
                     "Username": "USER_NAME",
                     "Password": "PASS_WORD",
-                    "RemoteTarget": "/PATH_TO_REMOTE_TARGET/wild.json"
+                    "RemoteTarget": "/PATH_TO_REMOTE_TARGET/ti-wild.json"
+                },
+                {
+                    "Id": "wild_creature_locations_chunked",
+                    "Scheme": "sftp",
+                    "Host": "SERVER_ADDRESS",
+                    "Username": "USER_NAME",
+                    "Password": "PASS_WORD",
+                    "RemoteTarget": "/PATH_TO_REMOTE_TARGET/ti-wild/"
                 }
             ]
         },
@@ -45,12 +61,28 @@
                     "RemoteTarget": "/PATH_TO_REMOTE_TARGET/se-tamed.json"
                 },
                 {
+                    "Id": "tamed_creature_locations_chunked",
+                    "Scheme": "sftp",
+                    "Host": "SERVER_ADDRESS",
+                    "Username": "USER_NAME",
+                    "Password": "PASS_WORD",
+                    "RemoteTarget": "/PATH_TO_REMOTE_TARGET/se-tamed/"
+                },
+                {
                     "Id": "wild_creature_locations",
                     "Scheme": "sftp",
                     "Host": "SERVER_ADDRESS",
                     "Username": "USER_NAME",
                     "Password": "PASS_WORD",
                     "RemoteTarget": "/PATH_TO_REMOTE_TARGET/se-wild.json"
+                },
+                {
+                    "Id": "wild_creature_locations_chunked",
+                    "Scheme": "sftp",
+                    "Host": "SERVER_ADDRESS",
+                    "Username": "USER_NAME",
+                    "Password": "PASS_WORD",
+                    "RemoteTarget": "/PATH_TO_REMOTE_TARGET/se-wild/"
                 },
                 {
                     "Id": "structure_locations",

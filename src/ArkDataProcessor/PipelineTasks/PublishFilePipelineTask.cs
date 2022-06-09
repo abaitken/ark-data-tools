@@ -2,37 +2,46 @@
 
 namespace ArkDataProcessor
 {
-    class PublishFilePipelineTask : DataProcessingPipelineTaskNoResult<string, UploadTarget>
+    class PublishFilePipelineTask : DataProcessingPipelineTaskNoResult<IEnumerable<UploadItem>, UploadTarget>
     {
-        internal override void Execute(string arg1, UploadTarget arg2)
+        internal override void Execute(IEnumerable<UploadItem> arg1, UploadTarget arg2)
         {
+            var uploadItems = arg1.ToList();
+
+            if (uploadItems.Count == 0)
+                return;
+
             switch (arg2.Scheme)
             {
                 case "sftp":
-                    ExecuteSFTP(arg1, arg2);
+                    ExecuteSFTP(uploadItems, arg2);
                     break;
                 case "copy":
-                    ExecuteCopy(arg1, arg2);
+                    ExecuteCopy(uploadItems);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(arg2.Scheme));
             }
         }
 
-        private void ExecuteCopy(string sourceFile, UploadTarget uploadTarget)
+        private void ExecuteCopy(List<UploadItem> uploadItems)
         {
-            File.Copy(sourceFile, uploadTarget.RemoteTarget, true);
+            foreach (var item in uploadItems)
+                File.Copy(item.LocalPath, item.RemotePath, true);
         }
 
-        private void ExecuteSFTP(string sourceFile, UploadTarget uploadTarget)
+        private void ExecuteSFTP(List<UploadItem> uploadItems, UploadTarget uploadTarget)
         {
             var connectionInfo = new PasswordConnectionInfo(uploadTarget.Host, uploadTarget.Username, uploadTarget.Password);
             using(var sftp = new SftpClient(connectionInfo))
             {
                 sftp.Connect();
 
-                using (var stream = File.OpenRead(sourceFile))
-                    sftp.UploadFile(stream, uploadTarget.RemoteTarget, true);
+                foreach (var item in uploadItems)
+                {
+                    using (var stream = File.OpenRead(item.LocalPath))
+                        sftp.UploadFile(stream, item.RemotePath, true);
+                }
 
                 sftp.Disconnect();
             }

@@ -25,7 +25,10 @@ namespace ArkDataProcessor
             var tempPath = TemporaryFileServices.GenerateFileName(".json");
             await new StoreJsonDataPipelineTask<dynamic>().ExecuteAsync(creatureLocationData, tempPath);
             foreach (var uploadTarget in uploadTargets)
-                await new PublishFilePipelineTask().ExecuteAsync(tempPath, uploadTarget);
+                await new PublishFilePipelineTask().ExecuteAsync(new[]{ new UploadItem{
+                    LocalPath = tempPath,
+                    RemotePath = uploadTarget.RemoteTarget
+                } }, uploadTarget);
             _ = new RemoveFilePipelineTask().ExecuteAsync(tempPath);
         }
     }

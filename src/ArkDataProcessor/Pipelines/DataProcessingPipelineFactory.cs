@@ -11,6 +11,8 @@ namespace ArkDataProcessor
             yield return new TamedCreatureBreedingDataPublishingPipeline();
             yield return new StructureLocationsPublishingPipeline();
             yield return new SaveFilePublishingPipeline();
+            yield return new WildCreatureLocationsChunkedPublishingPipeline();
+            yield return new TamedCreatureLocationsChunkedPublishingPipeline();
         }
     }
 }
