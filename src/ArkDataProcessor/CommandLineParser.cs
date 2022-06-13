@@ -25,6 +25,8 @@
 
                         if (!nextArgIsSwitch)
                             value = nextArg;
+                        else
+                            i--;
                     }
                 }
                 else
