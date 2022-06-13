@@ -14,10 +14,12 @@ namespace ArkDataProcessor
 
             var structuresByType = await new SelectStructuresByTypePipelineTask().ExecuteAsync(data.Structures);
             var locationsByType = await new SelectStructureLocationsByTypePipelineTask().ExecuteAsync(structuresByType);
+            var filter = configuration.Filters?.FirstOrDefault(i => i.Id.Equals(Id));
+            var filteredLocationsByType = await new FilterKeysPipelineTask<List<Coordinate>>().ExecuteAsync(locationsByType, filter);
             var creatureLocationData = new
             {
-                CreatureClasses = locationsByType.Keys,
-                Locations = locationsByType,
+                CreatureClasses = filteredLocationsByType.Keys,
+                Locations = filteredLocationsByType,
                 LastUpdated = DateTime.UtcNow.ToString()
             };
 

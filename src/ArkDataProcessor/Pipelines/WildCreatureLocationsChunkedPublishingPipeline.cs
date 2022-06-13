@@ -14,6 +14,8 @@ namespace ArkDataProcessor
 
             var creaturesByType = await new SelectCreaturesByTypePipelineTask().ExecuteAsync(data.WildCreatures);
             var locationsByType = await new SelectCreatureLocationsByTypePipelineTask().ExecuteAsync(creaturesByType);
+            var filter = configuration.Filters?.FirstOrDefault(i => i.Id.Equals(Id));
+            var filteredLocationsByType = await new FilterKeysPipelineTask<List<Coordinate>>().ExecuteAsync(locationsByType, filter);
 
             foreach (var uploadTarget in uploadTargets)
             {
@@ -23,7 +25,7 @@ namespace ArkDataProcessor
                 {
                     var header = new
                     {
-                        CreatureClasses = locationsByType.Keys,
+                        CreatureClasses = filteredLocationsByType.Keys,
                         LastUpdated = DateTime.UtcNow.ToString()
                     };
 
@@ -37,7 +39,7 @@ namespace ArkDataProcessor
                     });
                 }
 
-                foreach (var typeLocation in locationsByType)
+                foreach (var typeLocation in filteredLocationsByType)
                 {
                     var tempPath = TemporaryFileServices.GenerateFileName(".json");
                     await new StoreJsonDataPipelineTask<dynamic>().ExecuteAsync(typeLocation.Value, tempPath);
