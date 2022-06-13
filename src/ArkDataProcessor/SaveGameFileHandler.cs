@@ -13,16 +13,14 @@ namespace ArkDataProcessor
             _configuration = configuration;
         }
 
-        public void Process(string originalPath)
+        public void Process(string originalPath, IEnumerable<DataProcessingPipeline> pipelines)
         {
             var ext = Path.GetExtension(originalPath);
             var tempPath = TemporaryFileServices.GenerateFileName(ext);
             File.Copy(originalPath, tempPath);
             var data = new GameDataLoader().Load(tempPath);
 
-            var factory = new DataProcessingPipelineFactory();
-
-            foreach (var pipeline in factory.CreatePipelines())
+            foreach (var pipeline in pipelines)
                 pipeline.ExecuteAsync(data, _configuration);
 
             new RemoveFilePipelineTask().ExecuteAsync(tempPath);

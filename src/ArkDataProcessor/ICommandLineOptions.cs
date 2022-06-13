@@ -11,5 +11,6 @@
         string? DisplayName { get; }
         bool UseUserAccount { get; }
         bool LogToConsole { get; }
+        bool DumpKeys { get; }
     }
 }

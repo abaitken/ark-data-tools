@@ -13,6 +13,7 @@
             public string? DisplayName { get; internal set; }
             public bool UseUserAccount { get; internal set; }
             public bool LogToConsole { get; internal set; }
+            public bool DumpKeys { get; internal set; }
         }
 
         public ICommandLineOptions Build(string[] args)
@@ -30,7 +31,8 @@
                 ServiceName = commandLineTokens.GetValueOrDefault("sn"),
                 DisplayName = commandLineTokens.GetValueOrDefault("dn"),
                 UseUserAccount = commandLineTokens.ContainsKey("asuser"),
-                LogToConsole = commandLineTokens.ContainsKey("console")
+                LogToConsole = commandLineTokens.ContainsKey("console"),
+                DumpKeys = commandLineTokens.ContainsKey("dumpkeys")
             };
 
             return options;

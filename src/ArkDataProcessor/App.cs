@@ -29,6 +29,9 @@ namespace ArkDataProcessor
             if (options.UninstallService)
                 return new UninstallServiceCommand();
 
+            if (options.DumpKeys)
+                return new DumpKeysCommand();
+
             return new LaunchServiceCommand();
         }
 
