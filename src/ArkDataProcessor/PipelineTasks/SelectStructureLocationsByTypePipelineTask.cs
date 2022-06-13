@@ -10,8 +10,6 @@ namespace ArkDataProcessor
 
             foreach (var item in arg)
             {
-                if (!IsValid(item.Key))
-                    continue;
                 var coords = from i in item.Value
                              let location = i.Location
                              where location != null
@@ -29,13 +27,6 @@ namespace ArkDataProcessor
             }
 
             return result;
-        }
-
-        private readonly string[] _validKeys = { "BeaverDam_C", "WyvernNest_C" };
-
-        private bool IsValid(string key)
-        {
-            return _validKeys.Contains(key);
         }
     }
 }
