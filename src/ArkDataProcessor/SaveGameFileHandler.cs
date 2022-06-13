@@ -4,12 +4,12 @@ namespace ArkDataProcessor
 {
     class SaveGameFileHandler
     {
-        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger<SaveGameFileHandler> _logger;
         private readonly MonitoringSource _configuration;
 
-        public SaveGameFileHandler(ILoggerFactory loggerFactory, MonitoringSource configuration)
+        public SaveGameFileHandler(ILogger<SaveGameFileHandler> logger, MonitoringSource configuration)
         {
-            _loggerFactory = loggerFactory;
+            _logger = logger;
             _configuration = configuration;
         }
 
@@ -22,10 +22,15 @@ namespace ArkDataProcessor
 
             var tasks = new List<Task>();
             foreach (var pipeline in pipelines)
-                tasks.Add(pipeline.ExecuteAsync(data, _configuration));
+            {
+                _logger.LogInformation($"Executing pipeline '{pipeline.Id}'");
+                tasks.Add(pipeline.Execute(data, _configuration));
+            }
 
-            tasks.Add(new RemoveFilePipelineTask().ExecuteAsync(tempPath));
+            tasks.Add(new RemoveFilePipelineTask().Execute(tempPath));
+
             Task.WaitAll(tasks.ToArray());
+
         }
     }
 }

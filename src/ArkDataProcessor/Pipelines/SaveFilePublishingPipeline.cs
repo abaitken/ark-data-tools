@@ -6,7 +6,7 @@ namespace ArkDataProcessor
     {
         public override string Id => "raw_save_file";
 
-        internal override async void Execute(ArkGameData data, MonitoringSource configuration)
+        internal override async Task Execute(ArkGameData data, MonitoringSource configuration)
         {
             var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals(Id)).ToList();
             if (uploadTargets.Count == 0)
@@ -19,7 +19,7 @@ namespace ArkDataProcessor
                     LocalPath = tempPath,
                     RemotePath = uploadTarget.RemoteTarget
                 } }, uploadTarget);
-            _ = new RemoveFilePipelineTask().ExecuteAsync(tempPath);
+            _ = new RemoveFilePipelineTask().Execute(tempPath);
         }
     }
 }

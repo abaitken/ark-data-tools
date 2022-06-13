@@ -2,11 +2,6 @@
 {
     abstract class DataProcessingPipelineTask<TArg>
     {
-        internal abstract void Execute(TArg arg);
-
-        internal Task ExecuteAsync(TArg arg)
-        {
-            return Task.Run(() => Execute(arg));
-        }
+        internal abstract Task Execute(TArg arg);
     }
 }

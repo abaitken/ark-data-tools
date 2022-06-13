@@ -6,7 +6,7 @@ namespace ArkDataProcessor
     {
         public override string Id => "tamed_creature_locations_chunked";
 
-        internal override async void Execute(ArkGameData data, MonitoringSource configuration)
+        internal override async Task Execute(ArkGameData data, MonitoringSource configuration)
         {
             var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals(Id)).ToList();
             if (uploadTargets.Count == 0)
@@ -53,7 +53,7 @@ namespace ArkDataProcessor
                 await new PublishFilePipelineTask().ExecuteAsync(uploadItems, uploadTarget);
 
                 foreach (var item in uploadItems)
-                    _ = new RemoveFilePipelineTask().ExecuteAsync(item.LocalPath);
+                    _ = new RemoveFilePipelineTask().Execute(item.LocalPath);
             }
         }
     }

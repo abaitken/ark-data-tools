@@ -2,7 +2,7 @@
 {
     class RemoveFilePipelineTask : DataProcessingPipelineTask<string>
     {
-        internal override void Execute(string filename)
+        internal override Task Execute(string filename)
         {
             try
             {
@@ -11,6 +11,8 @@
             catch (Exception)
             {
             }
+
+            return Task.CompletedTask;
         }
     }
 }
