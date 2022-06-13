@@ -20,10 +20,12 @@ namespace ArkDataProcessor
             File.Copy(originalPath, tempPath);
             var data = new GameDataLoader().Load(tempPath);
 
+            var tasks = new List<Task>();
             foreach (var pipeline in pipelines)
-                pipeline.ExecuteAsync(data, _configuration);
+                tasks.Add(pipeline.ExecuteAsync(data, _configuration));
 
-            new RemoveFilePipelineTask().ExecuteAsync(tempPath);
+            tasks.Add(new RemoveFilePipelineTask().ExecuteAsync(tempPath));
+            Task.WaitAll(tasks.ToArray());
         }
     }
 }
