@@ -12,5 +12,6 @@
         bool UseUserAccount { get; }
         bool LogToConsole { get; }
         bool DumpKeys { get; }
+        bool RunOnce { get; }
     }
 }

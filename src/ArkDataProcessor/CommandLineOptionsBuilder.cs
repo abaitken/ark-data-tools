@@ -14,6 +14,7 @@
             public bool UseUserAccount { get; internal set; }
             public bool LogToConsole { get; internal set; }
             public bool DumpKeys { get; internal set; }
+            public bool RunOnce { get; internal set; }
         }
 
         public ICommandLineOptions Build(string[] args)
@@ -32,7 +33,8 @@
                 DisplayName = commandLineTokens.GetValueOrDefault("dn"),
                 UseUserAccount = commandLineTokens.ContainsKey("asuser"),
                 LogToConsole = commandLineTokens.ContainsKey("console"),
-                DumpKeys = commandLineTokens.ContainsKey("dumpkeys")
+                DumpKeys = commandLineTokens.ContainsKey("dumpkeys"),
+                RunOnce = commandLineTokens.ContainsKey("runonce")
             };
 
             return options;

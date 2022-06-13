@@ -32,6 +32,9 @@ namespace ArkDataProcessor
             if (options.DumpKeys)
                 return new DumpKeysCommand();
 
+            if (options.RunOnce)
+                return new RunOnceCommand();
+
             return new LaunchServiceCommand();
         }
 
