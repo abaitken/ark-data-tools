@@ -14,15 +14,14 @@ namespace ArkDataProcessor
             }
             );
 
+            var logger = loggerFactory.CreateLogger<DumpKeysCommand>();
 
+            var pipelines = new[] { new EntityKeysPublishingPipeline(EntityKeysPublishingPipeline.EntityKeysPublishingPipelineMode.Manual) };
             var configuration = new ConfigurationReader().Load(options.ConfigurationFile);
-            new ConfigurationValidation(loggerFactory.CreateLogger<ConfigurationValidation>()).Validate(configuration);
+            new ConfigurationValidation(loggerFactory.CreateLogger<ConfigurationValidation>(), pipelines).Validate(configuration);
 
             foreach (var monitoringSource in configuration.MonitoringSources)
-                new SaveGameFileHandler(loggerFactory, monitoringSource)
-                    .Process(monitoringSource.FilePath, 
-                        new[] { new EntityKeysPublishingPipeline(EntityKeysPublishingPipeline.EntityKeysPublishingPipelineMode.Manual) }
-                       );
+                new SaveGameFileHandler(loggerFactory, monitoringSource).Process(monitoringSource.FilePath, pipelines);
             
             return ExitCodes.OK;
         }

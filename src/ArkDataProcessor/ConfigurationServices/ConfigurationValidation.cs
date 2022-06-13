@@ -8,10 +8,14 @@ namespace ArkDataProcessor
         private readonly List<string> _validIds;
 
         public ConfigurationValidation(ILogger<ConfigurationValidation> logger)
+            : this(logger, new DataProcessingPipelineFactory().CreatePipelines())
+        {
+        }
+
+        public ConfigurationValidation(ILogger<ConfigurationValidation> logger, IEnumerable<DataProcessingPipeline> pipelines)
         {
             _logger = logger;
-            var factory = new DataProcessingPipelineFactory();
-            _validIds = factory.CreatePipelines().Select(v => v.Id).ToList();
+            _validIds = pipelines.Select(v => v.Id).ToList();
         }
 
         public void Validate(Configuration configuration)
