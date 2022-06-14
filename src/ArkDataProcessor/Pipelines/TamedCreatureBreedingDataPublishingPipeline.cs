@@ -1,10 +1,34 @@
 ﻿using ArkSavegameToolkitNet.Domain;
+using Newtonsoft.Json;
+using System.Reflection;
 
 namespace ArkDataProcessor
 {
+
     class TamedCreatureBreedingDataPublishingPipeline : DataProcessingPipeline
     {
+        private static readonly Dictionary<string, CreatureClassData> _mapping;
+
         public override string Id => "tamed_breeding_data";
+
+        public class CreatureClassData
+        {
+            public string ClassName { get; set; }
+            public string BlueprintPath { get; set; }
+            public string Name { get; set; }
+            public string DescriptiveName { get; set; }
+        }
+
+        static TamedCreatureBreedingDataPublishingPipeline()
+        {
+            var embeddedResource = new EmbeddedResource(Assembly.GetExecutingAssembly(), "ArkDataProcessor.Resources.ClassMapping.json");
+            var stream = embeddedResource.Read();
+            if (stream == null)
+                throw new InvalidOperationException("Failed to read class mapping resource data");
+            using var reader = new StreamReader(stream);
+            var classData = JsonConvert.DeserializeObject<CreatureClassData[]>(reader.ReadToEnd());
+            _mapping = classData.ToDictionary(k => k.ClassName, v => v);
+        }
 
         internal override async Task Execute(ArkGameData data, MonitoringSource configuration)
         {
@@ -14,21 +38,27 @@ namespace ArkDataProcessor
 
             var tamedCreatures = data.TamedCreatures;
 
-            
-    //public enum CreatureStatus
-    //{
-    //    Available,
-    //    Dead,
-    //    Unavailable,
-    //    Obelisk,
-    //    Cryopod
-    //};
+
+            //public enum CreatureStatus
+            //{
+            //    Available,
+            //    Dead,
+            //    Unavailable,
+            //    Obelisk,
+            //    Cryopod
+            //};
+
+            // speciesName, speciesBlueprintPath, name, owner, imprinter, tribe, server, note, sex [m/w], status, isBred [bool], neutered [bool], mutagen [bool],
+            // taming effectiveness [double], imprinting bonus [double], mutations maternal [int], mutations paternal [int], 12 stat levels wild [int], 12 stat levels dom [int], 6 color ids [int]
+            // in total: 10 string fields, 3 bool fields, 2 double fields (each two regex groups), 32 int fields
 
             var records = from item in tamedCreatures
+                          let blueprintPath = CreateSpeciesBlueprintPath(item)
+                          where !string.IsNullOrWhiteSpace(blueprintPath)
                           select new object[]
                           {
                             /* speciesName */ CreateSpeciesName(item),
-                            /* speciesBlueprintPath */ CreateSpeciesBlueprintPath(item),
+                            /* speciesBlueprintPath */ blueprintPath,
                             /* name */ item.Name,
                             /* owner */ item.OwningPlayerName,
                             /* imprinter */ item.ImprinterName,
@@ -89,12 +119,16 @@ namespace ArkDataProcessor
 
         private string CreateSpeciesBlueprintPath(ArkTamedCreature item)
         {
-            return item.ClassName;
+            if (!_mapping.TryGetValue(item.ClassName, out var data))
+                return string.Empty;
+            return data.BlueprintPath;
         }
 
         private string CreateSpeciesName(ArkTamedCreature item)
         {
-            return string.Empty;
+            if (!_mapping.TryGetValue(item.ClassName, out var data))
+                return string.Empty;
+            return data.Name;
         }
     }
 }
