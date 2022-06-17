@@ -17,6 +17,7 @@ namespace ArkDataProcessor
             var filter = configuration.Filters?.FirstOrDefault(i => i.Id.Equals(Id));
             var filteredLocationsByType = await new FilterKeysPipelineTask<List<Coordinate>>().ExecuteAsync(locationsByType, filter);
 
+            var publishFactory = new PublishFilePipelineTaskFactory();
             foreach (var uploadTarget in uploadTargets)
             {
                 var uploadItems = new List<UploadItem>();
@@ -30,7 +31,7 @@ namespace ArkDataProcessor
                     };
 
                     var tempPath = TemporaryFileServices.GenerateFileName(".json");
-                    await new StoreJsonDataPipelineTask<dynamic>().ExecuteAsync(header, tempPath);
+                    await new StoreJsonDataPipelineTask<dynamic>().Execute(header, tempPath);
 
                     uploadItems.Add(new UploadItem
                     {
@@ -42,7 +43,7 @@ namespace ArkDataProcessor
                 foreach (var typeLocation in filteredLocationsByType)
                 {
                     var tempPath = TemporaryFileServices.GenerateFileName(".json");
-                    await new StoreJsonDataPipelineTask<dynamic>().ExecuteAsync(typeLocation.Value, tempPath);
+                    await new StoreJsonDataPipelineTask<dynamic>().Execute(typeLocation.Value, tempPath);
 
                     uploadItems.Add(new UploadItem
                     {
@@ -52,7 +53,8 @@ namespace ArkDataProcessor
 
                 }
 
-                await new PublishFilePipelineTask().ExecuteAsync(uploadItems, uploadTarget);
+                var task = publishFactory.Create(uploadItems, uploadTarget);
+                await task.Execute(uploadItems, uploadTarget);
 
                 foreach (var item in uploadItems)
                     _ = new RemoveFilePipelineTask().Execute(item.LocalPath);

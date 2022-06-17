@@ -4,7 +4,7 @@ namespace ArkDataProcessor
 {
     class StoreTsvDataPipelineTask : DataProcessingPipelineTaskNoResult<IEnumerable<object[]>, string>
     {
-        internal override void Execute(IEnumerable<object[]> arg1, string arg2)
+        internal override Task Execute(IEnumerable<object[]> arg1, string arg2)
         {
             using(var writer = new StreamWriter(arg2))
             {
@@ -24,6 +24,7 @@ namespace ArkDataProcessor
                     writer.WriteLine(line);
                 }
             }
+            return Task.CompletedTask;
         }
     }
 }

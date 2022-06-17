@@ -14,11 +14,16 @@ namespace ArkDataProcessor
 
             var tempPath = TemporaryFileServices.GenerateFileName(".ark");
             File.Copy(configuration.FilePath, tempPath);
+            var publishFactory = new PublishFilePipelineTaskFactory();
             foreach (var uploadTarget in uploadTargets)
-                await new PublishFilePipelineTask().ExecuteAsync(new[]{ new UploadItem{
+            {
+                var uploadItems = new[]{ new UploadItem{
                     LocalPath = tempPath,
                     RemotePath = uploadTarget.RemoteTarget
-                } }, uploadTarget);
+                } };
+                var task = publishFactory.Create(uploadItems, uploadTarget);
+                await task.Execute(uploadItems, uploadTarget);
+            }
             _ = new RemoveFilePipelineTask().Execute(tempPath);
         }
     }
