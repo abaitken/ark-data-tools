@@ -6,5 +6,10 @@
         {
             return Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}{ext}");
         }
+
+        public static string GenerateFolderName()
+        {
+            return Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}");
+        }
     }
 }

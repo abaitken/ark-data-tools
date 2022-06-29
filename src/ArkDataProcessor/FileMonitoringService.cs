@@ -55,7 +55,7 @@ namespace ArkDataProcessor
                     if (action == ServiceAction.Execute)
                     {
                         _logger.LogInformation("File has changed. Executing pipelines...");
-                        var fileHandler = new SaveGameFileHandler(_loggerFactory.CreateLogger<SaveGameFileHandler>(), configuration);
+                        var fileHandler = new SaveGameFileHandler(_loggerFactory.CreateLogger<SaveGameFileHandler>(), configuration, _configuration.SharedSettings);
                         var factory = new DataProcessingPipelineFactory();
                         fileHandler.Process(configuration.FilePath, factory.CreatePipelines());
                         lastModified = modifiedTime;

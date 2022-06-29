@@ -24,7 +24,7 @@ namespace ArkDataProcessor
 
             foreach (var monitoringSource in configuration.MonitoringSources)
             {
-                var fileHandler = new SaveGameFileHandler(loggerFactory.CreateLogger<SaveGameFileHandler>(), monitoringSource);
+                var fileHandler = new SaveGameFileHandler(loggerFactory.CreateLogger<SaveGameFileHandler>(), monitoringSource, configuration.SharedSettings);
                 fileHandler.Process(monitoringSource.FilePath, pipelines);
             }
 

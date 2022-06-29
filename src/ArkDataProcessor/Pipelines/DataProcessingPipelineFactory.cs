@@ -15,6 +15,7 @@ namespace ArkDataProcessor
             yield return new TamedCreatureLocationsChunkedPublishingPipeline();
             yield return new EntityKeysPublishingPipeline(EntityKeysPublishingPipeline.EntityKeysPublishingPipelineMode.Automated);
             yield return new RollingBackupPublishingPipeline();
+            yield return new SmartBreedingLibraryPublishingPipeline();
         }
     }
 }

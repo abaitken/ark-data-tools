@@ -6,7 +6,7 @@ namespace ArkDataProcessor
     {
         public override string Id => "tamed_creature_locations";
 
-        internal override async Task Execute(ArkGameData data, MonitoringSource configuration)
+        internal override async Task Execute(ArkGameData data, MonitoringSource configuration, List<SharedSetting> sharedSettings)
         {
             var uploadTargets = configuration.UploadTargets.Where(i => i.Id.Equals(Id)).ToList();
             if (uploadTargets.Count == 0)

@@ -21,7 +21,7 @@ namespace ArkDataProcessor
             new ConfigurationValidation(loggerFactory.CreateLogger<ConfigurationValidation>(), pipelines).Validate(configuration);
 
             foreach (var monitoringSource in configuration.MonitoringSources)
-                new SaveGameFileHandler(loggerFactory.CreateLogger<SaveGameFileHandler>(), monitoringSource).Process(monitoringSource.FilePath, pipelines);
+                new SaveGameFileHandler(loggerFactory.CreateLogger<SaveGameFileHandler>(), monitoringSource, configuration.SharedSettings).Process(monitoringSource.FilePath, pipelines);
             
             return ExitCodes.OK;
         }

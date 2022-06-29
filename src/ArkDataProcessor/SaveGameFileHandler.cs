@@ -6,11 +6,13 @@ namespace ArkDataProcessor
     {
         private readonly ILogger<SaveGameFileHandler> _logger;
         private readonly MonitoringSource _configuration;
+        private readonly List<SharedSetting> _sharedSettings;
 
-        public SaveGameFileHandler(ILogger<SaveGameFileHandler> logger, MonitoringSource configuration)
+        public SaveGameFileHandler(ILogger<SaveGameFileHandler> logger, MonitoringSource configuration, List<SharedSetting> sharedSettings)
         {
             _logger = logger;
             _configuration = configuration;
+            _sharedSettings = sharedSettings;
         }
 
         public void Process(string originalPath, IEnumerable<DataProcessingPipeline> pipelines)
@@ -24,7 +26,7 @@ namespace ArkDataProcessor
             foreach (var pipeline in pipelines)
             {
                 _logger.LogInformation($"Executing pipeline '{pipeline.Id}'");
-                tasks.Add(pipeline.Execute(data, _configuration));
+                tasks.Add(pipeline.Execute(data, _configuration, _sharedSettings));
             }
 
             tasks.Add(new RemoveFilePipelineTask().Execute(tempPath));

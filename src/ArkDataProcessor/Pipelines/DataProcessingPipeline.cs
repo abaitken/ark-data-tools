@@ -6,6 +6,6 @@ namespace ArkDataProcessor
     {
         public abstract string Id { get; }
 
-        internal abstract Task Execute(ArkGameData data, MonitoringSource configuration);
+        internal abstract Task Execute(ArkGameData data, MonitoringSource configuration, List<SharedSetting> sharedSettings);
     }
 }
