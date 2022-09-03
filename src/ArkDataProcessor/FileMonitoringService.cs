@@ -57,7 +57,16 @@ namespace ArkDataProcessor
                         _logger.LogInformation("File has changed. Executing pipelines...");
                         var fileHandler = new SaveGameFileHandler(_loggerFactory.CreateLogger<SaveGameFileHandler>(), configuration, _configuration.SharedSettings);
                         var factory = new DataProcessingPipelineFactory();
-                        fileHandler.Process(configuration.FilePath, factory.CreatePipelines());
+
+                        try
+                        {
+                            fileHandler.Process(configuration.FilePath, factory.CreatePipelines());
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogError(ex, "An exception was thrown whilst processing pipelines for a monitoring source");
+                        }
+
                         lastModified = modifiedTime;
                         lastModifieds[index] = modifiedTime;
                         continue;

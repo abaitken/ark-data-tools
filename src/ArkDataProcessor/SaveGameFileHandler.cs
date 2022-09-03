@@ -17,6 +17,7 @@ namespace ArkDataProcessor
 
         public void Process(string originalPath, IEnumerable<DataProcessingPipeline> pipelines)
         {
+            _logger.LogInformation($"Loading data from '{originalPath}'");
             var ext = Path.GetExtension(originalPath);
             var tempPath = TemporaryFileServices.GenerateFileName(ext);
             File.Copy(originalPath, tempPath);
@@ -32,7 +33,6 @@ namespace ArkDataProcessor
             tasks.Add(new RemoveFilePipelineTask().Execute(tempPath));
 
             Task.WaitAll(tasks.ToArray());
-
         }
     }
 }

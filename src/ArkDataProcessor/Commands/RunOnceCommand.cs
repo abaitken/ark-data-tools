@@ -14,7 +14,6 @@ namespace ArkDataProcessor
             }
             );
 
-
             var configuration = new ConfigurationReader().Load(options.ConfigurationFile);
             new ConfigurationValidation(loggerFactory.CreateLogger<ConfigurationValidation>()).Validate(configuration);
 
@@ -24,8 +23,17 @@ namespace ArkDataProcessor
 
             foreach (var monitoringSource in configuration.MonitoringSources)
             {
-                var fileHandler = new SaveGameFileHandler(loggerFactory.CreateLogger<SaveGameFileHandler>(), monitoringSource, configuration.SharedSettings);
-                fileHandler.Process(monitoringSource.FilePath, pipelines);
+                var logger = loggerFactory.CreateLogger<SaveGameFileHandler>();
+                var fileHandler = new SaveGameFileHandler(logger, monitoringSource, configuration.SharedSettings);
+
+                try
+                {
+                    fileHandler.Process(monitoringSource.FilePath, pipelines);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError(ex, "An exception was thrown whilst processing pipelines for a monitoring source");
+                }
             }
 
             return ExitCodes.OK;
