@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using ArkDataProcessor.ArkGameModel;
+using Microsoft.Extensions.Logging;
 
 namespace ArkDataProcessor
 {
@@ -21,7 +22,10 @@ namespace ArkDataProcessor
             var ext = Path.GetExtension(originalPath);
             var tempPath = TemporaryFileServices.GenerateFileName(ext);
             File.Copy(originalPath, tempPath);
-            var data = new GameDataLoader().Load(tempPath);
+            var data = new GameDataLoader().Load(tempPath, new MapIdentity()
+            {
+                MapKey = Path.GetFileNameWithoutExtension(originalPath)
+            });
 
             var tasks = new List<Task>();
             foreach (var pipeline in pipelines)

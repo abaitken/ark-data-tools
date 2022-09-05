@@ -1,4 +1,4 @@
-﻿using ArkSavegameToolkitNet.Domain;
+﻿using ArkDataProcessor.ArkGameModel;
 using Newtonsoft.Json;
 using System.Reflection;
 
@@ -63,7 +63,7 @@ namespace ArkDataProcessor
                             /* owner */ item.OwningPlayerName,
                             /* imprinter */ item.ImprinterName,
                             /* tribe */ item.TribeName,
-                            /* server */ item.TamedOnServerName,
+                            /* server */ string.Empty,
                             /* note */ string.Empty,
                             /* sex [m/w] */ item.Gender == ArkCreatureGender.Male ? "m" : "w",
                             /* status */  "Available",

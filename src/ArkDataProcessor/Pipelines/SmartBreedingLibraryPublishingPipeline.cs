@@ -1,5 +1,5 @@
-﻿using ArkDataProcessor.Extensions;
-using ArkSavegameToolkitNet.Domain;
+﻿using ArkDataProcessor.ArkGameModel;
+using ArkDataProcessor.Extensions;
 
 namespace ArkDataProcessor
 {

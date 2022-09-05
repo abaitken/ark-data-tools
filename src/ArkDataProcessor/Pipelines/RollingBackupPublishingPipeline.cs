@@ -1,4 +1,4 @@
-﻿using ArkSavegameToolkitNet.Domain;
+﻿using ArkDataProcessor.ArkGameModel;
 using System.IO.Compression;
 
 namespace ArkDataProcessor

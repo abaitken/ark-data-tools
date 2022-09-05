@@ -1,36 +1,49 @@
-﻿using ArkSavegameToolkitNet.Domain;
+﻿using ArkDataProcessor.ArkGameModel;
+using SavegameToolkit;
+using SavegameToolkitAdditions;
 
 namespace ArkDataProcessor
 {
     class GameDataLoader
     {
-        static GameDataLoader()
+        public ArkGameData Load(string filepath, MapIdentity mapIdentity)
         {
-            // initialize default settings (maps etc.)
-            ArkToolkitDomain.Initialize();
-        }
 
-        public ArkGameData Load(string filepath)
-        {
-            var domainOnly = true; //true: optimize loading of the domain model, false: load everything and keep references in memory
-
-            //prepare
-            //var cd = new ArkClusterData(clusterPath, loadOnlyPropertiesInDomain: domainOnly);
-            var gd = new ArkGameData(filepath, /*cd, */loadOnlyPropertiesInDomain: domainOnly);
-
-            //extract savegame
-            if (gd.Update(CancellationToken.None, null, true)?.Success == true)
+            if (new FileInfo(filepath).Length > int.MaxValue)
             {
-                //extract cluster data
-                //var clusterResult = cd.Update(CancellationToken.None);
-
-                //assign the new data to the domain model
-                gd.ApplyPreviousUpdate(domainOnly);
-
-                return gd;
+                throw new Exception("Input file is too large.");
             }
 
-            throw new InvalidOperationException("Failed to load save game data");
+            var arkSavegame = new ArkSavegame();
+
+            bool PredicateCreatures(GameObject o) => !o.IsItem && (o.Parent != null || o.Components.Any());
+            bool PredicateCreaturesAndCryopods(GameObject o) => (!o.IsItem && (o.Parent != null || o.Components.Any())) || o.ClassString.Contains("Cryopod") || o.ClassString.Contains("SoulTrap_");
+
+            using var stream = new MemoryStream(File.ReadAllBytes(filepath));
+            using var archive = new ArkArchive(stream);
+
+            arkSavegame.ReadBinary(archive, ReadingOptions.Create()
+                .WithDataFiles(false)
+                .WithEmbeddedData(false)
+                .WithDataFilesObjectMap(false)
+                //.WithObjectFilter(new Predicate<GameObject>(PredicateCreaturesAndCryopods))
+                .WithCryopodCreatures(true)
+                .WithBuildComponentTree(true));
+
+            if (!arkSavegame.HibernationEntries.Any())
+            {
+                return new ArkGameData(arkSavegame, mapIdentity);
+            }
+
+            List<GameObject> combinedObjects = arkSavegame.Objects;
+
+            foreach (HibernationEntry entry in arkSavegame.HibernationEntries)
+            {
+                var collector = new ObjectCollector(entry, 1);
+                combinedObjects.AddRange(collector.Remap(combinedObjects.Count));
+            }
+
+            return new ArkGameData(new GameObjectContainer(combinedObjects), mapIdentity);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using ArkSavegameToolkitNet.Domain;
+﻿using ArkDataProcessor.ArkGameModel;
 using Microsoft.Extensions.Logging;
 
 namespace ArkDataProcessor

@@ -10,6 +10,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{0B46721D-47A0-47E3-800A-E2DD0258F7CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SavegameToolkit", "..\ArkSavegameToolkit\SavegameToolkit\SavegameToolkit.csproj", "{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SavegameToolkitAdditions", "..\ArkSavegameToolkit\SavegameToolkitAdditions\SavegameToolkitAdditions.csproj", "{09C98558-6F07-48F7-98F7-033B566EB0F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +38,37 @@ Global
 		{87F0482C-6741-4758-9851-21771B3A8EDF}.Release|x64.Build.0 = Release|Any CPU
 		{87F0482C-6741-4758-9851-21771B3A8EDF}.Release|x86.ActiveCfg = Release|Any CPU
 		{87F0482C-6741-4758-9851-21771B3A8EDF}.Release|x86.Build.0 = Release|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Debug|x64.Build.0 = Debug|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Debug|x86.Build.0 = Debug|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Release|x64.ActiveCfg = Release|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Release|x64.Build.0 = Release|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED}.Release|x86.Build.0 = Release|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Debug|x64.Build.0 = Debug|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Debug|x86.Build.0 = Debug|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Release|x64.ActiveCfg = Release|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Release|x64.Build.0 = Release|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{09C98558-6F07-48F7-98F7-033B566EB0F5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{66D3F1EF-E456-4D0E-8011-C5CCCE5219ED} = {0B46721D-47A0-47E3-800A-E2DD0258F7CE}
+		{09C98558-6F07-48F7-98F7-033B566EB0F5} = {0B46721D-47A0-47E3-800A-E2DD0258F7CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {467EBC87-1CB5-4C5A-9E5C-DD11A533337B}
