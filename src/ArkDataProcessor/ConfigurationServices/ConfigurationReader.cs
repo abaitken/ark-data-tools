@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ArkDataProcessor.ArkGameModel;
+using Newtonsoft.Json;
 
 namespace ArkDataProcessor
 {
@@ -38,6 +39,9 @@ namespace ArkDataProcessor
             item.FilePath = external.FilePath ?? item.FilePath;
             item.Filters = external.Filters ?? item.Filters;
             item.UploadTargets = external.UploadTargets ?? item.UploadTargets;
+            item.MapDefinition = external.MapDefinition ?? item.MapDefinition;
+            if(item.MapDefinition != null)
+                MapDefinitions.UpdateDefinition(item.MapDefinition);
         }
 
         private string ResolveFilePath(string filePath, string relativeTo)

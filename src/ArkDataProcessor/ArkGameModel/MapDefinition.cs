@@ -16,17 +16,23 @@ namespace ArkDataProcessor.ArkGameModel
     /// </remarks>
     public class MapDefinition
     {
-        [JsonConstructor]
         public MapDefinition(
+            string name,
             float latitudeShift,
             float latitudeDivisor,
             float longitudeShift,
             float longitudeDivisor)
         {
+            Name = name;
             LatitudeShift = latitudeShift;
             LatitudeDivisor = latitudeDivisor;
             LongitudeShift = longitudeShift;
             LongitudeDivisor = longitudeDivisor;
+        }
+
+        public MapDefinition()
+        {
+
         }
 
         public string Name { get; set; }
