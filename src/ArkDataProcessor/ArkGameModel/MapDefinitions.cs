@@ -41,7 +41,9 @@
             {"Genesis", new MapDefinition(50.0f, 10500.0f, 50.0f, 10500.0f)},
             {"Valhalla", new MapDefinition(48.813560485839844f, 14750.0f, 48.813560485839844f, 14750.0f)},
             {"MortemTupiu", new MapDefinition(32.479148864746094f, 20000.0f, 40.59893798828125f, 16000.0f)},
-            {"PGARK", new MapDefinition(0.0f, 6080.0f, 0.0f, 6080.0f)}
+            {"PGARK", new MapDefinition(0.0f, 6080.0f, 0.0f, 6080.0f)},
+            {"Fjordur", new MapDefinition(50.009388f, 13100f, 50.009388f, 13100f)},
+            {"Genesis2", new MapDefinition(50.009388f, 13100f, 50.009388f, 13100f)}
         };
     }
 }
